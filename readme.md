@@ -16,7 +16,6 @@ email을 입력받아 랜덤으로 쿠폰번호를 해주는 프로그램
 * run the project on Boot Dashboard
 
 ### Dependencies
-'''xml
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -81,6 +80,4 @@ email을 입력받아 랜덤으로 쿠폰번호를 해주는 프로그램
 			<groupId>org.hibernate.validator</groupId>
 			<artifactId>hibernate-validator-annotation-processor</artifactId>
 		</dependency>
-		
-'''
 
