@@ -11,14 +11,48 @@ import org.springframework.stereotype.Service;
 import com.kakao.dao.CouponRepository;
 import com.kakao.dto.CouponDTO;
 import com.kakao.entity.Coupon;
+import com.kakao.exception.EmailAlreadyUsedException;
 
 @Service
 public class CouponServiceImpl implements CouponService{
 	@Autowired
 	private CouponRepository couponRepository;
 
+	
 	@Override
-	public String generate(String data, int length) {
+	public Page<Coupon> couponPageable(Pageable pageable) {
+		
+		return couponRepository.findAll(pageable);
+	}
+
+	@Override
+	public Coupon couponSave(CouponDTO couponDTO) {
+		if (couponRepository.existsByEmail(couponDTO.getEmail())) {
+            throw new EmailAlreadyUsedException();
+        }
+		String code = coupnum();
+		Coupon coupon = new Coupon(couponDTO.getEmail(), code);
+		return couponRepository.save(coupon);
+	}
+	
+	@Override
+	public CouponDTO couponSaveandReturnDTO(CouponDTO couponDTO) {
+		if (couponRepository.existsByEmail(couponDTO.getEmail())) {
+            throw new EmailAlreadyUsedException();
+        }
+		String code = coupnum();
+		couponDTO = new CouponDTO(TheNumberOfCoupons() + 1, couponDTO.getEmail(), code);
+		couponRepository.save(couponDTO.toEntity());
+		
+		return couponDTO;
+	}
+
+	private Long TheNumberOfCoupons() {
+		Long Total = (long) couponRepository.findAll().size();
+		return Total;
+	}
+	
+	private String generate(String data, int length) {
 		SecureRandom random = new SecureRandom();
 		
         if (length < 1) throw new IllegalArgumentException("길이는 1이상이어야 합니다.");
@@ -30,8 +64,7 @@ public class CouponServiceImpl implements CouponService{
         return sb.toString();
 	}
 
-	@Override
-	public String coupnum() {
+	private String coupnum() {
     	String English_Lower = "abcdefghijklmnopqrstuvwxyz";
         String English_Upper = English_Lower.toUpperCase();
         String Number = "0123456789";
@@ -43,31 +76,5 @@ public class CouponServiceImpl implements CouponService{
         
         return CouponNumber;
 	}
-	
-	@Override
-	public boolean existsEmail(String email) {
-		
-		return couponRepository.existsByEmail(email);
-	}
-
-	@Override
-	public Page<Coupon> couponPageable(Pageable pageable) {
-		
-		return couponRepository.findAll(pageable);
-	}
-
-	@Override
-	public Coupon couponSave(CouponDTO couponDTO) {
-		
-		return couponRepository.save(couponDTO.toEntity());
-	}
-
-	@Override
-	public Long TheNumberOfCoupons() {
-		Long Total = (long) couponRepository.findAll().size();
-		return Total;
-	}
-	
-
 	
 }

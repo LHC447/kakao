@@ -6,7 +6,7 @@ public class EmailAlreadyUsedException extends RuntimeException{
 	private String message;
 
 	public EmailAlreadyUsedException() {
-		this.message= "이미 사용중인 이메일입니다.";
+		this.message= "Email is already used.";
 	}
 
 	public EmailAlreadyUsedException(String msg){

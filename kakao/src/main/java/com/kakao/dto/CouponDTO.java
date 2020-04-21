@@ -9,22 +9,29 @@ import javax.validation.constraints.NotBlank;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.kakao.entity.Coupon;
 
+import io.swagger.annotations.ApiModelProperty;
+
 
 public class CouponDTO {
 
-	
+	@ApiModelProperty(example="1")
 	@JsonProperty
 	private Long id;
 
+	@ApiModelProperty(example="1@gmail.com")
 	@JsonProperty
 	@Email(message = "Email should be valid")
 	@NotBlank
 	private String email;
 	
+	@ApiModelProperty(example="AuSV-uFNI-uP6U-Hb5F")
 	@JsonProperty
 	private String code;
 	
 	private LocalDateTime createDate;
+	
+	@ApiModelProperty(example="2020.04.07 13:42:26")
+	private String formattedCreateDate;
 	
 	public CouponDTO() {}
 	

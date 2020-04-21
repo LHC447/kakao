@@ -14,7 +14,7 @@ public class GlobalExceptionHandler {
 		ErrorMessage errorMessage = new ErrorMessage();
 
 		errorMessage.setStatus(HttpStatus.BAD_REQUEST.toString());
-		errorMessage.setMessage("형식에 맞게 입력해주세요");
+		errorMessage.setMessage("invalid email");
 
 		return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
 

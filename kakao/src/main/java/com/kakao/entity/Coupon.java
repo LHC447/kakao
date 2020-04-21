@@ -11,24 +11,31 @@ import javax.persistence.Id;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import io.swagger.annotations.ApiModelProperty;
+
 
 @Entity
 public class Coupon {
+	
+	@ApiModelProperty(example="1")
 	@Id
 	@GeneratedValue
 	@JsonProperty
 	private Long id;
 	
+	@ApiModelProperty(example="1@gmail.com")
 	@Column(nullable = false, unique = true)
 	@JsonProperty
 	private String email;
 	
+	@ApiModelProperty(example="AuSV-uFNI-uP6U-Hb5F")
 	@JsonProperty
 	private String code;
 	
-	
 	private LocalDateTime createDate;
 	
+	@ApiModelProperty(example="2020.04.07 13:42:26")
+	private String formattedCreateDate;
 	
 	public Coupon() {}
 	

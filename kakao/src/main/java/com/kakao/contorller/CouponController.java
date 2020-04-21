@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import com.kakao.dto.CouponDTO;
 import com.kakao.entity.Coupon;
-import com.kakao.exception.EmailAlreadyUsedException;
 import com.kakao.service.CouponService;
 
 @Controller
@@ -33,21 +32,20 @@ public class CouponController {
 
 		return "coupon/list";
 	}
+	
+	@GetMapping("/api/coupon/list")
+	public ResponseEntity<Page<Coupon>> couponlist(
+			@PageableDefault(sort = { "id" }, direction = Sort.Direction.ASC, size = 5) Pageable pageable) {
+
+		return new ResponseEntity<>(couponService.couponPageable(pageable), HttpStatus.OK);
+	}
 
 	@PostMapping("/api/coupon/create")
 	private ResponseEntity<CouponDTO> create(@Valid CouponDTO dto) {
-		if (couponService.existsEmail(dto.getEmail()) == false) {
 
-			String code = couponService.coupnum();
-			dto = new CouponDTO(couponService.TheNumberOfCoupons() + 1, dto.getEmail(), code);
-			couponService.couponSave(dto);
-
-			return new ResponseEntity<>(dto, HttpStatus.OK);
-		} else {
-
-			throw new EmailAlreadyUsedException();
-		}
+			return new ResponseEntity<>(couponService.couponSaveandReturnDTO(dto), HttpStatus.OK);
 
 	}
+	
 
 }
